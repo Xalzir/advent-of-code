@@ -1,15 +1,7 @@
 from collections import Counter
 
 
-def get_input() -> str:
-    with open("input.txt") as data:
-        return data.read()
-
-
-input = get_input()
-
-
-def get_num_of_fishes(num_of_days: int) -> int:
+def get_num_of_fishes(num_of_days: int, input: str) -> int:
     numbers_count = Counter(int(num) for num in input.strip().split(","))
     for _ in range(num_of_days):
         tmp_count = Counter({6: numbers_count[0], 8: numbers_count[0]})
@@ -19,7 +11,10 @@ def get_num_of_fishes(num_of_days: int) -> int:
 
 
 # **************************************** PART ONE ****************************************
-print(f"result for first subtask: {get_num_of_fishes(80)}")
+def first_subtask(input: str) -> int:
+    return get_num_of_fishes(80, input)
+
 
 # **************************************** PART TWO ****************************************
-print(f"result for second subtask: {get_num_of_fishes(256)}")
+def second_subtask(input: str) -> int:
+    return get_num_of_fishes(256, input)

@@ -5,7 +5,7 @@ on:
   - pull_request
 
 jobs:
-  black:
+  Style:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,5 +18,23 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install nox
-    - name: Check formatting with black
-      run: nox -e check_black
+    - name: Check formatting with black and isort
+      run: |
+        nox -e check_black
+        nox -e check_isort
+      
+  Tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install nox
+    - name: Run tests
+      run: nox -e tests

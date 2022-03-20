@@ -1,13 +1,5 @@
-def get_input() -> list[str]:
-    with open("input.txt") as data:
-        return data.read().split("\n\n")
-
-
-numbers, *unparsed_boards = get_input()
-
-
 class Board:
-    def __init__(self, unparsed_board) -> None:
+    def __init__(self, unparsed_board):
         self.board = [[int(num) for num in line.split()] for line in unparsed_board.splitlines()]
         self.left_nums = {int(num) for num in unparsed_board.split()}
 
@@ -27,13 +19,16 @@ class Board:
         return False
 
 
-input_numbers = [int(num) for num in numbers.split(",")]
+def prepare_inputs_and_boards(input: str) -> tuple[list[int], list[Board]]:
+    numbers, *unparsed_boards = input.split("\n\n")
+    input_numbers = [int(num) for num in numbers.split(",")]
+    boards = [Board(unparsed_board) for unparsed_board in unparsed_boards]
+    return input_numbers, boards
+
 
 # **************************************** PART ONE ****************************************
-boards = [Board(unparsed_board) for unparsed_board in unparsed_boards]
-
-
-def get_first_subtask_result() -> int:
+def first_subtask(input: str) -> int:
+    input_numbers, boards = prepare_inputs_and_boards(input)
     for number in input_numbers:
         for board in boards:
             board.left_nums.discard(number)
@@ -41,16 +36,14 @@ def get_first_subtask_result() -> int:
                 return sum(board.left_nums) * number
 
 
-print(f"result for first subtask: {get_first_subtask_result()}")
-
 # **************************************** PART TWO ****************************************
-boards = [Board(unparsed_board) for unparsed_board in unparsed_boards]
-last_winner = 0
+def second_subtask(input: str) -> int:
+    input_numbers, boards = prepare_inputs_and_boards(input)
+    last_winner = 0
 
-for number in input_numbers:
-    for board in [board for board in boards if not board.has_won]:
-        board.left_nums.discard(number)
-        if board.has_won:
-            last_winner = sum(board.left_nums) * number
-
-print(f"result for first subtask: {last_winner}")
+    for number in input_numbers:
+        for board in [board for board in boards if not board.has_won]:
+            board.left_nums.discard(number)
+            if board.has_won:
+                last_winner = sum(board.left_nums) * number
+    return last_winner
