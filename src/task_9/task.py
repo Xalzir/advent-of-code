@@ -12,7 +12,7 @@ def all_adjacent_cords_are_lower(x: int, y: int, coord_value: int, coords) -> bo
     return all(coords.get(pt, 9) > coord_value for pt in adjacent_cords(x, y))
 
 
-def prepare_coords_dict(input: str) -> dict[str, int]:
+def prepare_coords_dict(input: str) -> dict[tuple[int, int], int]:
     return {(x, y): int(num) for y, line in enumerate(input.splitlines()) for x, num in enumerate(line)}
 
 
